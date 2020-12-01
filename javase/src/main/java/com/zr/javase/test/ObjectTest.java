@@ -13,6 +13,8 @@ public class ObjectTest {
     public static void main(String[] args) {
         Object obj = new Object();
 
+        obj.hashCode();
+
         System.out.println(ClassLayout.parseInstance(obj).toPrintable());
 
         synchronized (obj) {
