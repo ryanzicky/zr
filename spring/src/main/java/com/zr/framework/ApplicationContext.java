@@ -1,10 +1,12 @@
 package com.zr.framework;
 
+import org.assertj.core.util.Lists;
+
 import java.io.File;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,6 +18,7 @@ public class ApplicationContext {
     private Class configClass;
     private Map<String, BeanDefinition> beanDefinitionMap = new HashMap<>();
     private Map<String, Object> singletonObjects = new HashMap<>(); // 单例池
+    private List<BeanPostProcessor> beanPostProcessorList = Lists.newArrayList();
 
     public ApplicationContext(Class configClass) {
         this.configClass = configClass;
@@ -32,26 +35,48 @@ public class ApplicationContext {
             BeanDefinition beanDefinition = beanDefinitionMap.get(beanName);
             if (beanDefinition.getScope().equals("singleton") && !beanDefinition.isLazy()) {
                 // 创建bean
-                Object bean = createBean(beanDefinition);
+                Object bean = createBean(beanDefinition, beanName);
                 singletonObjects.put(beanName, bean);
             }
         }
     }
 
-    private Object createBean(BeanDefinition beanDefinition) {
+    private Object createBean(BeanDefinition beanDefinition, String beanName) {
 
         Class beanClass = beanDefinition.getBeanClass();
         try {
             Object instance = beanClass.getDeclaredConstructor().newInstance();
 
+            for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                beanPostProcessor.autowired();
+            }
+
             // 填充属性
-            for (Field field : beanClass.getDeclaredFields()) {
+            // 先byType搜索
+            // 后byName搜索
+            /*for (Field field : beanClass.getDeclaredFields()) {
                 if (field.isAnnotationPresent(Autowired.class)) {
                     Object bean = getBean(field.getName());
                     field.setAccessible(true);
                     field.set(instance, bean);
                 }
+            }*/
+
+            if (instance instanceof  BeanNameAware) {
+                ((BeanNameAware) instance).setBeanName(beanName);
             }
+
+            /*for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                beanPostProcessor.postProcessBeforeInitialization();
+            }*/
+
+            if (instance instanceof  InitializingBean) {
+                ((InitializingBean) instance).afterPropertiesSet();
+            }
+
+            /*for (BeanPostProcessor beanPostProcessor : beanPostProcessorList) {
+                beanPostProcessor.postProcessAfterInitialization();
+            }*/
 
             return instance;
         } catch (InstantiationException e) {
@@ -88,6 +113,13 @@ public class ApplicationContext {
                         System.out.println(clazz);
                         if (clazz.isAnnotationPresent(Component.class)) {
                             // 这是一个bean
+
+                            if (BeanPostProcessor.class.isAssignableFrom(clazz)) {
+                                BeanPostProcessor o = (BeanPostProcessor) clazz.getDeclaredConstructor().newInstance();
+                                beanPostProcessorList.add(o);
+                            }
+
+
                             BeanDefinition beanDefinition = new BeanDefinition();
                             beanDefinition.setBeanClass(clazz);
 
@@ -110,7 +142,13 @@ public class ApplicationContext {
 
                             beanDefinitionMap.put(beanName, beanDefinition);
                         }
-                    } catch (ClassNotFoundException e) {
+                    } catch (ClassNotFoundException | NoSuchMethodException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (InvocationTargetException e) {
                         e.printStackTrace();
                     }
                 }
@@ -129,13 +167,13 @@ public class ApplicationContext {
                 // 单例池
                 Object o = singletonObjects.get(beanName);
                 if (o == null) {
-                    Object bean = createBean(beanDefinition);
+                    Object bean = createBean(beanDefinition, beanName);
                     singletonObjects.put(beanName, bean);
                 }
                 return o;
             } else if (beanDefinition.getScope().equals("propertype")) {
                 // 创建一个bean
-                Object bean = createBean(beanDefinition);
+                Object bean = createBean(beanDefinition, beanName);
                 return bean;
             }
         }

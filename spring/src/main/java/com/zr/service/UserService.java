@@ -1,8 +1,6 @@
 package com.zr.service;
 
-import com.zr.framework.Autowired;
-import com.zr.framework.Component;
-import com.zr.framework.Scope;
+import com.zr.framework.*;
 
 /**
  * @Author: zhourui
@@ -10,14 +8,25 @@ import com.zr.framework.Scope;
  **/
 @Component("userService")
 @Scope("propertype")
-public class UserService {
+public class UserService implements BeanNameAware, InitializingBean {
 
     @Autowired
     private OrderService orderService;
 
-    private String name;
+    private String beanName;
+
+    @Override
+    public void setBeanName(String name) {
+        this.beanName = name;
+    }
+
+    @Override
+    public void afterPropertiesSet() {
+
+    }
 
     public void test() {
         System.out.println(orderService);
+        System.out.println(beanName);
     }
 }
