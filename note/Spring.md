@@ -1,3 +1,3 @@
 #### BeanDefinition
-1. Scope
-2. isLazy
+
+#### Bean生命周期
