@@ -1,0 +1,19 @@
+﻿#!/bin/sh 
+
+# service_name = TestMaven
+# jar_name = sample-parent-0.0.1-RELEASE.jar
+
+# docker exec -it jenkins /bin/bash
+cd /var/jenkins_home/workspace/TestMaven
+
+echo "开始执行脚本"
+
+pid = `ps -ef |grep $(echo sample-parent-0.0.1-RELEASE.jar | awk -F/ '{print $NF}') | grep -v grep | awk '{print $2}'`
+echo "进程号: " pid
+
+kill -9 pid
+nohuo java -jar ./target/sample-parent-0.0.1-RELEASE.jar >nohup.log 2>&1 &
+
+echo "执行脚本结束"
+
+exit 0
