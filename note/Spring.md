@@ -1,4 +1,4 @@
-#### Spring中核心概念详解（看源码必备）
+#### Spring中核心概念
 1. BeanDefinition
 
 2. BeanDefinitionReader
@@ -70,10 +70,37 @@
 
     Spring启动的时候会进行扫描，会先调用
 
-    ```java
+    ```
     Resource[] resources = getResourcePatternResolver().getResources(packageSearchPath);
     ```
 
 2. 合并BeanDefinition
 
-    如果某个BeanDefinition存在父BeanDefinition
+    如果某个BeanDefinition存在父BeanDefinition，则要进行合并
+    
+3. 加载类
+
+4. 实例化前
+
+5. 单独构造方法
+
+6. 实例化
+
+7. BeanDefinition的后置处理
+
+8. 填充属性
+
+9. 执行Aware
+
+10. 初始化前
+
+11. 初始化
+
+12. 初始化后
+
+#### Bean的销毁过程
+
+1. 容器关闭
+2. 发布COntextClosedEvent
+3. 调用LifecycleProcessor的onClose方法
+4. 销毁单例Bean
