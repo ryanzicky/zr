@@ -101,6 +101,26 @@
 #### Bean的销毁过程
 
 1. 容器关闭
-2. 发布COntextClosedEvent
+2. 发布ContextClosedEvent
 3. 调用LifecycleProcessor的onClose方法
 4. 销毁单例Bean
+
+
+
+#### Spring中依赖注入
+
+1. 注入方式
+
+   1. 手动注入
+   2. 自动注入
+
+2. 自动注入
+
+   1. XML自动注入
+
+      1. set注入
+      2. 构造注入
+
+   2. @Autowired注解自动注入
+
+      

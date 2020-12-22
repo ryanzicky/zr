@@ -1,4 +1,4 @@
-﻿#!/bin/sh 
+#!/bin/sh 
 
 # service_name = TestMaven
 # jar_name = sample-parent-0.0.1-RELEASE.jar
