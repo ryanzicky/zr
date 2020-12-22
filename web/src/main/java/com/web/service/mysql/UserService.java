@@ -1,6 +1,8 @@
 package com.web.service.mysql;
 
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.web.domain.ResponseEntity;
 import com.web.domain.request.UserRequest;
 import com.web.domain.response.UserResponse;
 import com.web.generator.dao.TUser;
@@ -22,16 +24,24 @@ public class UserService {
     @Autowired
     private TUserService tUserService;
 
-    public List<UserResponse> getUserList(UserRequest request) {
-        List<UserResponse> responseList = Lists.newArrayList();
-        List<TUser> list = tUserService.getList(request);
-        list.forEach(user -> {
-            UserResponse resp = UserResponse.builder().build();
-            BeanUtils.copyProperties(user, resp);
+    public ResponseEntity<List<UserResponse>> getUserList(UserRequest request) {
+        ResponseEntity<List<UserResponse>> resp = ResponseEntity.success(ResponseEntity.class);
 
-            responseList.add(resp);
+        List<UserResponse> responseList = Lists.newArrayList();
+        PageInfo<TUser> pageInfo = tUserService.getList(request);
+        pageInfo.getList().forEach(user -> {
+            UserResponse userResponse = UserResponse.builder().build();
+            BeanUtils.copyProperties(user, userResponse);
+
+            responseList.add(userResponse);
         });
-        return responseList;
+
+        resp.setData(responseList);
+        resp.setMsg("获取用户列表成功!");
+        resp.setTotal(pageInfo.getTotal());
+        resp.setPages(pageInfo.getPages());
+
+        return resp;
     }
 
     public Long addUser(UserRequest request) {

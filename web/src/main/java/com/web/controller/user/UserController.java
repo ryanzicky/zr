@@ -32,10 +32,7 @@ public class UserController {
     public ResponseEntity<List<UserResponse>> userList(@RequestBody UserRequest request) {
         try {
             log.info("request = {}", JSON.toJSONString(request));
-            ResponseEntity<List<UserResponse>> resp = ResponseEntity.success(ResponseEntity.class);
-            resp.setData(userService.getUserList(request));
-            resp.setMsg("获取用户列表成功!");
-            return resp;
+            return userService.getUserList(request);
         } catch (Exception e) {
             log.error("获取用户列表失败!,{}, {}", JSON.toJSONString(request), e);
             return new ResponseEntity(500, "获取用户列表失败!");
