@@ -1,6 +1,7 @@
 package com.web.generator.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -32,11 +33,13 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
         }
         wrapper.orderBy("id", false);
 
-        PageHelper.startPage(1, 1);
-        List<TUser> tUsers = this.baseMapper.selectList(wrapper);
+        Page<TUser> page = new Page<>(request.getPageNum(), request.getPageSize());
+        this.selectPage(page, wrapper);
 
-        PageInfo<TUser> pageInfo = new PageInfo<>(tUsers);
-        return pageInfo;
+
+        PageHelper.startPage(request.getPageNum(), request.getPageSize());
+        List<TUser> tUsers = this.selectList(wrapper);
+        return PageInfo.of(tUsers);
     }
 
     @Override

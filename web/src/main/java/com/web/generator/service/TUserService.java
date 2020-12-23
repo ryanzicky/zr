@@ -4,8 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.web.domain.request.UserRequest;
 import com.web.generator.dao.TUser;
 
-import java.util.List;
-
 /**
  * @Author zhourui
  * @Date 2020/12/22 10:25
