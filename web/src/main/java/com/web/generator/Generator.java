@@ -53,7 +53,7 @@ public class Generator {
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);
-        strategy.setInclude("t_user"); // 需要生成的表
+        strategy.setInclude("t_user", "t_menu", "t_permission", "t_permission_menu", "t_role", "t_role_permission", "t_user_role"); // 需要生成的表
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         //        strategy.setSuperEntityClass("top.ibase4j.core.base.BaseModel");

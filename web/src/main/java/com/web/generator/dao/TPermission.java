@@ -24,8 +24,8 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("t_user")
-public class TUser implements Serializable {
+@TableName("t_permission")
+public class TPermission implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,19 +37,8 @@ public class TUser implements Serializable {
     /**
      * uid
      */
-    private String uid;
-    /**
-     * 名称
-     */
-    private String name;
-    /**
-     * 密码
-     */
-    private String password;
-    /**
-     * 手机号
-     */
-    private String phone;
+    @TableField("permission_uid")
+    private String permissionUid;
     /**
      * 是否删除
      */
@@ -61,7 +50,7 @@ public class TUser implements Serializable {
     @TableField("create_name")
     private String createName;
     /**
-     * 添加时间
+     * 创建时间
      */
     @TableField("create_date")
     private Date createDate;

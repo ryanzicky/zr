@@ -1,6 +1,6 @@
 package com.web.generator.mapper;
 
-import com.web.generator.dao.TUser;
+import com.web.generator.dao.TRole;
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  * @author zhourui
  * @since 2020-12-23
  */
-public interface TUserMapper extends BaseMapper<TUser> {
+public interface TRoleMapper extends BaseMapper<TRole> {
 
 }

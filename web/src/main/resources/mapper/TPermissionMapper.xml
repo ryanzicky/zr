@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.web.generator.mapper.TUserMapper">
+<mapper namespace="com.web.generator.mapper.TPermissionMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="com.web.generator.dao.TUser">
+    <resultMap id="BaseResultMap" type="com.web.generator.dao.TPermission">
         <id column="id" property="id" />
-        <result column="uid" property="uid" />
-        <result column="name" property="name" />
-        <result column="password" property="password" />
-        <result column="phone" property="phone" />
+        <result column="permission_uid" property="permissionUid" />
         <result column="is_remove" property="isRemove" />
         <result column="create_name" property="createName" />
         <result column="create_date" property="createDate" />
