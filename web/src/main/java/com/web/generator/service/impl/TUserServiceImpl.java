@@ -33,10 +33,6 @@ public class TUserServiceImpl extends ServiceImpl<TUserMapper, TUser> implements
         }
         wrapper.orderBy("id", false);
 
-        Page<TUser> page = new Page<>(request.getPageNum(), request.getPageSize());
-        this.selectPage(page, wrapper);
-
-
         PageHelper.startPage(request.getPageNum(), request.getPageSize());
         List<TUser> tUsers = this.selectList(wrapper);
         return PageInfo.of(tUsers);
