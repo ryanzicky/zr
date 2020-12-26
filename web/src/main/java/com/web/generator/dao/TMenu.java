@@ -7,8 +7,6 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import java.io.Serializable;
 
-import com.baomidou.mybatisplus.annotations.Version;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -37,8 +35,12 @@ public class TMenu implements Serializable {
     /**
      * uid
      */
-    @TableField("menu_uid")
-    private String menuUid;
+    private String uid;
+    /**
+     * 父级菜单uid
+     */
+    @TableField("parent_uid")
+    private String parentUid;
     /**
      * 菜单名称
      */

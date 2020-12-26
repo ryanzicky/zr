@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.web.domain.ResponseEntity;
 import com.web.domain.request.UserRequest;
 import com.web.domain.response.UserResponse;
+import com.web.enums.TypeEnum;
 import com.web.generator.dao.TUser;
 import com.web.generator.service.TUserService;
 import com.web.utils.RandomUtil;
@@ -48,7 +49,8 @@ public class UserService {
         TUser tUser = new TUser();
         BeanUtils.copyProperties(request, tUser);
         tUser.setIsRemove(0);
-        tUser.setPassword(RandomUtil.UUID(tUser.getName(), tUser.getPassword()));
+        tUser.setPassword(RandomUtil.UUIDWithSalt(tUser.getName(), tUser.getPassword()));
+        tUser.setUid(RandomUtil.UUIDWithSalt(TypeEnum.USER.getName(), String.valueOf(System.currentTimeMillis())));
         return tUserService.addUser(tUser);
     }
 

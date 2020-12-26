@@ -1,5 +1,7 @@
 package com.web.generator.service;
 
+import com.github.pagehelper.PageInfo;
+import com.web.domain.request.PermissionRequest;
 import com.web.generator.dao.TPermission;
 import com.baomidou.mybatisplus.service.IService;
 
@@ -13,4 +15,9 @@ import com.baomidou.mybatisplus.service.IService;
  */
 public interface TPermissionService extends IService<TPermission> {
 
+    PageInfo<TPermission> getList(PermissionRequest request);
+
+    Long addPermission(PermissionRequest request);
+
+    Integer delPermission(PermissionRequest request);
 }

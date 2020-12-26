@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.web.generator.dao.TMenu">
         <id column="id" property="id" />
-        <result column="menu_uid" property="menuUid" />
+        <result column="uid" property="uid" />
         <result column="menu_name" property="menuName" />
         <result column="menu_desc" property="menuDesc" />
         <result column="menu_uri" property="menuUri" />
