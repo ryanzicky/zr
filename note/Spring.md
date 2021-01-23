@@ -37,24 +37,11 @@
 
     ![img](https://cdn.nlark.com/yuque/0/2020/png/365147/1602055467561-b96bd4c4-9be4-4abb-99da-73f3f147ec3e.png)
 
-    1. HierarchicalBeanFactory：拥有获取父BeanFactory的功能
-
-    2. ListableBeanFactory：拥有获取beanNames的功能
-
-    3. ResourcePatternResolver：资源加载器，可以一次性获取多个资源（文件资源等等）
-
-    4. EnvironmentCapable：可以获取运行时环境（没有设置运行时环境功能）
-
-    5. ApplicationEventPublisher：拥有广播事件的功能（没有添加事件监听器的功能）
-
-    6. MessageSource：拥有国际化功能
-
+ 
     又两个比较重要的实现类：
 
     1. AnnotationConfigApplicationContext
-    2. ClassPathXmlApplicationContext
-
-8. AnnotationConfigApplicationContext
+ 8. AnnotationConfigApplicationContext
 
     ![img](https://cdn.nlark.com/yuque/0/2020/png/365147/1602055860352-0925b046-b88e-4085-b872-b1ec5aeb8fee.png)
 
@@ -122,5 +109,33 @@
       2. 构造注入
 
    2. @Autowired注解自动注入
+   
+
+#### Bean的销毁过程
+1. 容器关闭
+2. 发布ContextClosedEvent事件
+3. 调用LifeCycleProcessor的onCLose方法
+4. 销毁单例Bean
+    1. 找出所有DisposableBean(实现了DisposableBean接口的Bean)
+    2. 遍历每个DisposableBean
+    3. 找出依赖了当前DisposableBean的其他Bean，将这些Bean从单例池中移除掉
+    4. 调用DisposableBean的dstroy()方法
+    5. 找到当前DisposableBean所包含的inner beans, 将这些Bean从单例池中移除掉  
+        [inner beans](https://docs.spring.io/spring-framework/docs/current/spring-framework-reference/core.html#beans-inner-beans)
+    
+  **这里涉及到一个设计模式: 适配器模式**  
+  在销毁时,Spring会找出实现了DisposableBean接口的Bean
 
       
+      
+#### Spring启动
+1. BeanDefinition
+2. 类加载器
+3. @Value $ 占位符填充对象 解析SpringEL表达式
+4. AutowiredAnnotationBeanPostProcessor
+5. CommonAnnotationBeanPostProcessor
+
+**BeanFactory**
+
+#### AnnotationConfigApplicationContext启动
+
