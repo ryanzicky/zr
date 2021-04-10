@@ -158,7 +158,7 @@ public class Main {
         }
     }*/
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         String aa = sc.nextLine();
         System.out.println(aa);
@@ -179,6 +179,22 @@ public class Main {
         map.entrySet().forEach(v -> {
             System.out.println(v.getKey() + " " + v.getValue());
         });
+    }*/
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        while (sc.hasNext()) {
+            int len = sc.nextInt();
+            if (len == 0) {
+                break;
+            }
+            int sum = 0;
+            while (len > 0) {
+                sum += sc.nextInt();
+                len--;
+            }
+            System.out.println(sum);
+        }
     }
 
 }

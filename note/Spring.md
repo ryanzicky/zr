@@ -139,3 +139,31 @@
 
 #### AnnotationConfigApplicationContext启动
 
+
+### Spring 生命周期
+
+### Spring IOC AOP
+    
+### Spring 设计模式
+    1. 单例模式：Bean
+    2. 原型模式：设置属性为property
+    3. 工厂模式
+
+### BeanFactory和Factory Bean的区别
+    BeanFactory需要遵守Spring的生命周期
+    不想遵守可以实现FactoryBean接口
+
+### Spring 事务
+    声明式事务，编码式事务
+    1. 事务实现：
+        Spring的事务是由AOP实现的，首先生成具体的代理对象，然后按照AOP的整套流程执行具体的操作逻辑
+        
+### Spring 事务传播
+    1. 传播特性有几种？
+        7种
+        Required，Require_new，bested，Support，Not_Support,Never,Mandatory
+    2. 某一个事务嵌套另一个事务的时候怎么办？
+        A方法调用B方法，AB方法都有事务，并且传播特性不同，那么A如果有异常，B怎么办？B如果有异常，A怎么办？
+        
+        总：事务的传播特性指的是不同方法的嵌套调用过程中，事务应该如何处理，是使用同一个事务还是不同的事务，当出现异常时
+        是回滚还是提交，两个方法之间的相关影响，在日常工作中，使用比较多的是Require，Require_new,nested
