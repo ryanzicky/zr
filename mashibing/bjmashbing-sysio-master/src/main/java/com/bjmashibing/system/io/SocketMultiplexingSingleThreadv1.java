@@ -83,7 +83,7 @@ public class SocketMultiplexingSingleThreadv1 {
                             readHandler(key);  //连read 还有 write都处理了
                             //在当前线程，这个方法可能会阻塞  ，如果阻塞了十年，其他的IO早就没电了。。。
                             //所以，为什么提出了 IO THREADS
-                            //redis  是不是用了epoll，redis是不是有个io threads的概念 ，redis是不是单线程的
+                            //redis  是不是用了epoll，redis是不是有个io threa ds的概念 ，redis是不是单线程的
                             //tomcat 8,9  异步的处理方式  IO  和   处理上  解耦
                         }
                     }

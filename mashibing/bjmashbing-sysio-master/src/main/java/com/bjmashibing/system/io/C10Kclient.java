@@ -13,7 +13,7 @@ public class C10Kclient {
 
     public static void main(String[] args) {
         LinkedList<SocketChannel> clients = new LinkedList<>();
-        InetSocketAddress serverAddr = new InetSocketAddress("192.168.150.11", 9090);
+        InetSocketAddress serverAddr = new InetSocketAddress("47.105.171.231", 9090);
 
         //端口号的问题：65535
         //  windows
@@ -29,15 +29,15 @@ public class C10Kclient {
                 client...port: 10508
                  */
 
-                client1.bind(new InetSocketAddress("192.168.150.1", i));
+                client1.bind(new InetSocketAddress("172.16.192.133", i));
                 //  192.168.150.1：10000   192.168.150.11：9090
                 client1.connect(serverAddr);
                 clients.add(client1);
 
-                client2.bind(new InetSocketAddress("192.168.110.100", i));
+                /*client2.bind(new InetSocketAddress("172.16.192.253", i));
                 //  192.168.110.100：10000  192.168.150.11：9090
                 client2.connect(serverAddr);
-                clients.add(client2);
+                clients.add(client2);*/
 
             } catch (IOException e) {
                 e.printStackTrace();
