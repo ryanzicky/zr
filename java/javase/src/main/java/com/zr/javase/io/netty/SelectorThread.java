@@ -39,10 +39,10 @@ public class SelectorThread implements Runnable {
 
                 // 1. select()
                 /*阻塞 wakeup()*/
-                System.out.println(Thread.currentThread().getName() + " :  before select......" + selector.keys().size());
+//                System.out.println(Thread.currentThread().getName() + " :  before select......" + selector.keys().size());
                 int nums = selector.select();
 //                Thread.sleep(1000);
-                System.out.println(Thread.currentThread().getName() + " :  after select......" + selector.keys().size());
+//                System.out.println(Thread.currentThread().getName() + " :  after select......" + selector.keys().size());
                 // 2. 处理selectkeys
                 if (nums > 0) {
                     Set<SelectionKey> keys = selector.selectedKeys();
@@ -62,17 +62,19 @@ public class SelectorThread implements Runnable {
                         }
                     }
                 }
-                // 3. 处理一些task
+                // 3. 处理一些task：listen client
                 if (!lbq.isEmpty()) { // 队列是个啥东西？堆里的对象，线程的栈是独立的，堆是共享的
                     // 只有方法的逻辑，本地变量是线程隔离的
                     Channel c = lbq.take();
                     if (c instanceof ServerSocketChannel) {
                         ServerSocketChannel server = (ServerSocketChannel) c;
                         server.register(selector, SelectionKey.OP_ACCEPT);
+                        System.out.println(Thread.currentThread().getName() + " register listen.");
                     } else if (c instanceof SocketChannel) {
                         SocketChannel client = (SocketChannel) c;
                         ByteBuffer buffer = ByteBuffer.allocateDirect(4096);
                         client.register(selector, SelectionKey.OP_READ, buffer);
+                        System.out.println(Thread.currentThread().getName() + " register client: " + client.getRemoteAddress());
                     }
                 }
             } catch (IOException e) {
@@ -84,6 +86,7 @@ public class SelectorThread implements Runnable {
     }
 
     private void readHandler(SelectionKey key) {
+        System.out.println(Thread.currentThread().getName() + " read.....");
         ByteBuffer buffer = (ByteBuffer) key.attachment();
         SocketChannel client = (SocketChannel) key.channel();
         buffer.clear();
@@ -103,6 +106,7 @@ public class SelectorThread implements Runnable {
                     // 客户端断开了
                     System.out.println("client: " + client.getRemoteAddress() + "closed......");
                     key.cancel();
+                    break;
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -111,18 +115,22 @@ public class SelectorThread implements Runnable {
     }
 
     private void acceptHandler(SelectionKey key) {
-        System.out.println("acceptHandler.....");
+        System.out.println(Thread.currentThread().getName() + " acceptHandler.....");
         ServerSocketChannel server = (ServerSocketChannel) key.channel();
         try {
             SocketChannel client = server.accept();
             client.configureBlocking(false);
 
             // choose a selector and register!
-            stg.nextSelector(client);
+            stg.nextSelectorV3(client);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
+    }
+
+    public void setWorker(SelectorThreadGroup stgWorker) {
+        this.stg = stg;
     }
 }
